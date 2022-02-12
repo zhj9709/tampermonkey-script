@@ -1,0 +1,34 @@
+// ==UserScript==
+// @name         Bilibili合集列表高度调整
+// @namespace    http://tampermonkey.net/
+// @version      0.1.3
+// @description  调整B站合集列表高度
+// @author       vertexz
+// @match        https://www.bilibili.com/video/*
+// @icon         https://cdn.jsdelivr.net/gh/the1812/Bilibili-Evolved@preview/images/logo-small.png
+// @grant        none
+// @license     GNU GPLv3
+// ==/UserScript==
+
+(function () {
+    'use strict';
+    var targetNode = document.getElementsByClassName("video-sections-content-list")[0];
+    if (!targetNode) return;
+    // 合集列表有两种，带缩略图的列表不需要设置高度
+    if (targetNode.className.indexOf(' ') > 0) {
+        console.log('合集列表高度不需要设置');
+        return;
+    }
+    // 自定义高度
+    var height = '220px';
+    targetNode.style.height = height;
+    targetNode.style.maxHeight = '100%';
+    // 第一次设置高度后，等页面刷新完会被重置成原来的高度，所以需要再次设置
+    var timer = setInterval(function () {
+        console.log('合集列表高度设置' + height + 'px');
+        if (targetNode.style.height != height) {
+            targetNode.style.height = height;
+            clearInterval(timer);
+        }
+    }, 500);
+})();
