@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bilibili合集列表高度调整
 // @namespace    http://tampermonkey.net/
-// @version      0.1.4
+// @version      0.1.5
 // @description  调整B站合集列表高度
 // @author       vertexz
 // @match        https://www.bilibili.com/video/*
@@ -27,10 +27,14 @@
     targetNode.style.maxHeight = '100%';
     // 第一次设置高度后，等页面刷新完会被重置成原来的高度，所以需要再次设置
     var timer = setInterval(function () {
-        console.log('合集列表高度设置' + height + 'px');
+        console.log('合集列表高度设置' + height);
         if (targetNode.style.height != height) {
             targetNode.style.height = height;
             clearInterval(timer);
         }
     }, 500);
+    // 防止定时器未能及时清除，5秒后清除定时器
+    setTimeout(function () {
+        clearInterval(timer);
+    }, 5000)
 })();
